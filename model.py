@@ -143,27 +143,38 @@ class Model:
 			for i in range(dimension):
 				list_entropy.append(Model.gain(list_handle, i))
 			node_index = list_entropy.index(max(list_entropy))
-			for example in list_handle:
-				example.data[node_index] = None
 			return list_handle, node_index
 		elif flag == "gain_ratio":     # 增益率
 			list_gain = []
 			for i in range(dimension):
 				list_gain.append(Model.gain_ratio(list_handle, i))
 			node_index = list_gain.index(max(list_gain))
-			for example in list_handle:
-				example.data[node_index] = None
 			return list_handle, node_index
 		elif flag == "gini_index":     # 基尼指数
 			list_gini = []
 			for i in range(dimension):
 				list_gini.append(Model.gini_index(list_handle, i))
 			node_index = list_gini.index(min(list_gini))
-			for example in list_handle:
-				example.data[node_index] = None
 			return list_handle, node_index
 		else:
 			return False
+	
+	"""
+	@staticmethod
+	def generate(data_list, str):
+		if data_list.__len__() == 0:
+		
+		flag_temp = data_list[0].flag
+		standard0 = True
+		for example in data_list:
+			if example.flag != flag_temp:
+				standard0 = False
+				break
+		if standard0:
+			return str[:-2]
+	"""
+		
+	
 
 
 if __name__ == "__main__":
