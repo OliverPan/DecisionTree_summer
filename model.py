@@ -23,7 +23,7 @@ class Model:
 		try:
 			for num in flag_list:
 				pk = float(num/total)
-				result += pk*math.log2(pk)
+				result -= pk*math.log2(pk)
 		except ZeroDivisionError:
 			print("empty list!")
 		return result
@@ -40,7 +40,7 @@ class Model:
 			else:
 				temp_list.append(example.data[a])
 		num = len(temp_list)
-		final_list = [[]] * num
+		final_list = [[] for i in range(num)]
 		for example in example_list:
 			for i in range(num):
 				if example.data[a] == temp_list[i]:
@@ -63,20 +63,23 @@ class Model:
 			else:
 				temp_list.append(example.data[a])
 		num = len(temp_list)
-		final_list = [[]] * num
+		final_list = [[] for i in range(num)]
 		for example in example_list:
 			for i in range(num):
 				if example.data[a] == temp_list[i]:
 					final_list[i].append(example)
 					break
-		gain_result = 0
+		temp_result = 0
 		for lis in final_list:
-			gain_result -= float(len(lis) / length) * Model.entropy(lis)
-		Gain = Model.entropy(example_list) + gain_result
+			temp_result -= float(len(lis) / length) * Model.entropy(lis)
+		Gain = Model.entropy(example_list) + temp_result
 		IV_result = 0
 		for lis in final_list:
 			IV_result -= float(len(lis) / length) * math.log2(float(len(lis) / length))
-		IV = float(Gain / IV_result)
+		try:
+			IV = float(Gain / IV_result)
+		except ZeroDivisionError:
+			return 0
 		return IV
 	
 	@staticmethod
@@ -112,7 +115,7 @@ class Model:
 			else:
 				temp_list.append(example.data[a])
 		num = len(temp_list)
-		final_list = [[]] * num
+		final_list = [[] for i in range(num)]
 		for example in example_list:
 			for i in range(num):
 				if example.data[a] == temp_list[i]:
@@ -167,4 +170,4 @@ if __name__ == "__main__":
 	model = Model()
 	filename = "./mushroom/agaricus-lepiota.data"
 	model.initialize(filename)
-	print(model.find_node(model.data_list)[1])
+	print(model.find_node(model.data_list, flag="gini_index")[1])
