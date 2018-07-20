@@ -6,5 +6,3 @@ class Data:
 		self.data = np.array(data, dtype=np.str_)
 		self.flag = flag
 		self.prediction = prediction
-		
-	
