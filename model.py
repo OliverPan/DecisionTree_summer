@@ -159,10 +159,22 @@ class Model:
 		else:
 			return False
 	
-	"""
-	@staticmethod
-	def generate(data_list, str):
-		if data_list.__len__() == 0:
+	def generate(self, data_list, str, stage):
+		stage -= 1
+		if stage == 0:  # 层数到了
+			flag_list = []
+			num_list = []
+			for data in data_list:
+				if data.flag in flag_list:
+					index = flag_list.index(data.flag)
+					num_list[index] += 1
+				else:
+					flag_list.append(data.flag)
+					num_list.append(1)
+			max_index = num_list.index(max(num_list))
+			final_flag = flag_list[max_index]
+			str += final_flag
+			return str
 		
 		flag_temp = data_list[0].flag
 		standard0 = True
@@ -172,9 +184,10 @@ class Model:
 				break
 		if standard0:
 			return str[:-2]
-	"""
-		
-	
+		else:
+			list_handle, next_node = self.find_node(data_list)
+			str = str + str(next_node) + "->"
+			
 
 
 if __name__ == "__main__":
