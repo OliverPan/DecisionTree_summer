@@ -229,12 +229,9 @@ class Model:
 
 if __name__ == "__main__":
 	model = Model()
-	filename = "./car/data.dat"
+	filename = "./car/train.txt"
 	model.initialize(filename)
-	print(model.find_node(model.data_list, flag="gini_index")[1])
-	print(model.data_list[0].data, model.data_list[0].flag)
-	print("start!")
 	tree_list = []
 	model.generate(model.data_list, "", tree_list)
 	with open("tree.txt", "w+") as fi:
-		fi.write("".join(tree_list))
+		fi.write("\n".join(tree_list))

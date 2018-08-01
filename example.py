@@ -20,6 +20,9 @@ class Data:
 					break
 			if temp_flag:
 				return_list.append(branch)
-		self.prediction = max(return_list)[-1]
+		try:
+			self.prediction = max(return_list)[-1]
+		except ValueError:
+			self.prediction = "unpredictable"
 		
 
