@@ -1,5 +1,6 @@
 import math
 import example
+import copy
 
 
 class Model:
@@ -131,12 +132,12 @@ class Model:
 			temp_list = fi.readlines()
 		for line in temp_list:
 			line_list = line.split(",")
-			self.data_list.append(example.Data(line_list[1:-1], flag=line_list[0]))
+			self.data_list.append(example.Data(line_list[0:-1], flag=line_list[-1]))
 			
 	def find_node(self, list_input, flag=None):
 		if not flag:
 			flag = self.flag
-		list_handle = list_input.copy()
+		list_handle = copy.deepcopy(list_input)
 		dimension = list_handle[0].data.size
 		if flag == "info_gain": # 信息增益
 			list_entropy = []
@@ -165,9 +166,75 @@ class Model:
 		else:
 			return False
 
+	def generate(self, data_list, string, final_list, flag=None):
+		# 生成节点node
+		if data_list.__len__() == 0:
+			return False
+		temp_flag = data_list[0].flag
+		temp_status = True
+		for data in data_list:
+			if data.flag != temp_flag:
+				temp_status = False
+				break
+		if temp_status:
+			final_list.append(string + temp_flag)
+			return True
+		temp_data = data_list[0]
+		label_list = []
+		num_list = []
+		temp_status = True
+		for ele in temp_data.data:
+			if ele:
+				temp_status = False
+				break
+		if temp_status:         # 不考虑D中样本在A上取值相同
+			for data in data_list:
+				if data.flag in label_list:
+					num_list[label_list.index(data.flag)] += 1
+				else:
+					label_list.append(data.flag)
+					num_list.append(1)
+			max_num = max(num_list)
+			final_list.append(string+label_list[num_list.index(max_num)])
+			return True
+		
+		# 从A中找到最优划分属性a*
+		new_list, node_index = self.find_node(data_list, flag)
+		new_set = []
+		class_list = []
+		for index in range(new_list.__len__()):
+			if data_list[index].data[node_index] == "?":        # 为？的样本暂时丢弃
+				continue
+			elif data_list[index].data[node_index] in class_list:
+				new_set[class_list.index(data_list[index].data[node_index])].append(new_list[index])
+			else:
+				new_set.append([new_list[index]])
+				class_list.append(data_list[index].data[node_index])
+		return_status = True
+		for list_index in range(new_set.__len__()):
+
+			temp_status = self.generate(new_set[list_index], string+str(node_index)+":"+class_list[list_index]+"->",final_list, flag)
+			return_status &= temp_status
+		if not return_status:
+			for data in data_list:
+				if data.flag in label_list:
+					num_list[label_list.index(data.flag)] += 1
+				else:
+					label_list.append(data.flag)
+					num_list.append(1)
+			max_num = max(num_list)
+			final_list.append(string+label_list[num_list.index(max_num)])
+		return True
+		
 
 if __name__ == "__main__":
 	model = Model()
-	filename = "./mushroom/agaricus-lepiota.data"
+	filename = "./car/data.dat"
 	model.initialize(filename)
 	print(model.find_node(model.data_list, flag="gini_index")[1])
+	print(model.data_list[0].data, model.data_list[0].flag)
+	print("start!")
+	tree_list = []
+	model.generate(model.data_list, "", tree_list)
+	with open("tree.txt", "w+") as fi:
+		fi.write("".join(tree_list))
