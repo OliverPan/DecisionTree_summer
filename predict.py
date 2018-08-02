@@ -37,6 +37,6 @@ class Test:
 
 if __name__ == "__main__":
 	test = Test()
-	test.initialize("./car/data.dat")
+	test.initialize("./car/test.txt")
 	test.init_model("tree.txt")
 	print(test.cal_accuracy())
