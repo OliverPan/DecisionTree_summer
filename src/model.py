@@ -1,10 +1,11 @@
 import math
 import example
 import copy
+import sys
 
 
 class Model:
-	def __init__(self, flag="info_gain"):
+	def __init__(self, flag="gini_index"):
 		self.flag = flag
 		self.data_list = []
 		
@@ -232,6 +233,7 @@ if __name__ == "__main__":
 	filename = "../car/train.txt"
 	model.initialize(filename)
 	tree_list = []
-	model.generate(model.data_list, "", tree_list)
+	flag = sys.argv[1]
+	model.generate(model.data_list, "", tree_list, flag)
 	with open("tree.txt", "w+") as fi:
 		fi.write("\n".join(tree_list))
