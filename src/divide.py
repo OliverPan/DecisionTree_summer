@@ -1,4 +1,5 @@
 import random
+import sys
 
 
 def divide(filename):
@@ -8,8 +9,7 @@ def divide(filename):
 	f2 = open("../car/test.txt", "w+")
 	for line in line_list:
 		temp = random.uniform(0, 1)
-		print(temp)
-		if float(temp) > 0.4:
+		if float(temp) > 0.3:
 			f2.write(line)
 		else:
 			f1.write(line)

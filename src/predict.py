@@ -1,4 +1,5 @@
 import example
+import sys
 
 
 class Test:
