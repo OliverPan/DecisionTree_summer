@@ -4,8 +4,8 @@ import random
 def divide(filename):
 	with open(filename, "r") as fi:
 		line_list = fi.readlines()
-	f1 = open("./car/train.txt", "w+")
-	f2 = open("./car/test.txt", "w+")
+	f1 = open("../car/train.txt", "w+")
+	f2 = open("../car/test.txt", "w+")
 	for line in line_list:
 		temp = random.uniform(0, 1)
 		print(temp)
@@ -18,4 +18,4 @@ def divide(filename):
 	
 	
 if __name__ == "__main__":
-	divide("./car/data.dat")
+	divide("../car/data.dat")

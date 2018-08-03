@@ -26,7 +26,6 @@ class Test:
 		total = 0
 		for data in self.data_list:
 			data.find_branch(self.model)
-			print("flag:"+data.flag, "predict:"+data.prediction)
 			if data.flag == data.prediction:
 				correct += 1
 				total += 1
@@ -37,6 +36,6 @@ class Test:
 
 if __name__ == "__main__":
 	test = Test()
-	test.initialize("./car/test.txt")
+	test.initialize("../car/test.txt")
 	test.init_model("tree.txt")
 	print(test.cal_accuracy())
