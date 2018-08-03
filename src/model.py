@@ -229,7 +229,7 @@ class Model:
 
 if __name__ == "__main__":
 	model = Model()
-	filename = "./car/train.txt"
+	filename = "../car/train.txt"
 	model.initialize(filename)
 	tree_list = []
 	model.generate(model.data_list, "", tree_list)
